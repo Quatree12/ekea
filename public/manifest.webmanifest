@@ -1,0 +1,46 @@
+{
+  "name": "EKEA — Assistant administratif personnel",
+  "short_name": "EKEA",
+  "description": "L’administratif, en toute clarté. Comprenez vos documents suisses, suivez vos échéances, accomplissez vos démarches.",
+  "lang": "fr-CH",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3F0E8",
+  "theme_color": "#F3F0E8",
+  "categories": ["productivity", "utilities", "finance"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ajouter un document",
+      "short_name": "Ajouter",
+      "url": "./#/ajouter"
+    },
+    {
+      "name": "Mes échéances",
+      "short_name": "Échéances",
+      "url": "./#/echeances"
+    }
+  ]
+}
