@@ -55,8 +55,11 @@ export function ToastHost() {
 export async function hashPin(pin: string, salt: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(`${salt}:${pin}`);
-  if (!globalThis.crypto?.subtle) {
-    // Repli déterministe si WebCrypto est indisponible (contexte non sécurisé).
+
+  // Repli déterministe si WebCrypto est indisponible (contexte non sécurisé).
+  // Le test est fait une fois : `subtle` ne change pas en cours de vie.
+  const subtle = globalThis.crypto ? globalThis.crypto.subtle : undefined;
+  if (!subtle) {
     let hash = 0;
     const str = `${salt}:${pin}`;
     for (let i = 0; i < str.length; i += 1) {
@@ -65,7 +68,8 @@ export async function hashPin(pin: string, salt: string): Promise<string> {
     }
     return `fallback:${Math.abs(hash).toString(36)}`;
   }
-  const digest = await crypto.subtle.digest('SHA-256', data);
+
+  const digest = await subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
@@ -73,7 +77,8 @@ export async function hashPin(pin: string, salt: string): Promise<string> {
 
 function randomSalt(): string {
   const bytes = new Uint8Array(12);
-  if (globalThis.crypto?.getRandomValues) crypto.getRandomValues(bytes);
+  const cryptoObj = globalThis.crypto;
+  if (cryptoObj && cryptoObj.getRandomValues) cryptoObj.getRandomValues(bytes);
   else for (let i = 0; i < bytes.length; i += 1) bytes[i] = Math.floor(Math.random() * 256);
   return Array.from(bytes)
     .map((b) => b.toString(16).padStart(2, '0'))
@@ -136,7 +141,7 @@ export function PinLock({ onUnlock }: { onUnlock: () => void }) {
           Déverrouiller
         </button>
 
-        <p className="mt-6 text-[12px] leading-relaxed text-ink-faint">
+        <p className="mt-6 text-[12px] leading-relaxed text-ink-muted">
           Ce code protège l’accès à l’application sur cet appareil. Il n’est ni transmis, ni
           conservé en clair.
         </p>
