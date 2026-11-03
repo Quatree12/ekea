@@ -1,0 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   EKEA — Design tokens & base layer
+   L’administratif, en toute clarté.
+--------------------------------------------------------------------------- */
+
+:root {
+  --ekea-forest: #24362e;
+  --ekea-sage: #87958a;
+  --ekea-sand: #d9cbb5;
+  --ekea-ivory: #f3f0e8;
+  --ekea-champagne: #c5a878;
+  --ekea-white: #ffffff;
+
+  --ekea-success: #5c7a5f;
+  --ekea-warning: #c08a3e;
+  --ekea-urgent: #c4705c;
+  --ekea-neutral: #8e8879;
+
+  --ekea-radius-card: 20px;
+  --ekea-radius-tile: 16px;
+
+  --ekea-shadow-soft: 0 1px 2px rgba(36, 54, 46, 0.04), 0 8px 24px -12px rgba(36, 54, 46, 0.14);
+  --ekea-shadow-lift: 0 2px 4px rgba(36, 54, 46, 0.05), 0 18px 40px -18px rgba(36, 54, 46, 0.22);
+
+  --ekea-nav-height: 62px;
+  --ekea-header-height: 60px;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-ivory text-forest font-sans antialiased;
+    margin: 0;
+    min-height: 100dvh;
+    overscroll-behavior-y: none;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variant-ligatures: contextual;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-forest;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* Focus visible — accessible mais discret, jamais un halo de navigateur. */
+  :focus-visible {
+    outline: 2px solid var(--ekea-champagne);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: 16px; /* évite le zoom iOS à la mise au point */
+  }
+
+  /* Respect des préférences de mouvement réduit sur tout le produit. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* --- Surfaces ---------------------------------------------------------- */
+
+  .ekea-card {
+    @apply rounded-card border border-sand/50 bg-white shadow-soft;
+  }
+
+  .ekea-card-flat {
+    @apply rounded-card border border-sand/45 bg-white/70;
+  }
+
+  .ekea-tile {
+    @apply rounded-tile border border-sand/50 bg-white transition-all duration-300 ease-calm
+           active:scale-[0.985] active:bg-ivory-soft;
+  }
+
+  .ekea-inset {
+    @apply rounded-tile bg-ivory-deep/60 border border-sand/35;
+  }
+
+  /* --- Boutons ----------------------------------------------------------- */
+
+  .ekea-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill px-5
+           text-[15px] font-medium transition-all duration-300 ease-calm
+           disabled:cursor-not-allowed disabled:opacity-45;
+    min-height: 50px;
+  }
+
+  .ekea-btn-primary {
+    @apply ekea-btn bg-forest text-ivory shadow-brand
+           active:scale-[0.975] active:bg-forest-900;
+  }
+
+  .ekea-btn-secondary {
+    @apply ekea-btn border border-forest/20 bg-white text-forest
+           active:scale-[0.975] active:bg-ivory-soft;
+  }
+
+  .ekea-btn-ghost {
+    @apply ekea-btn text-ink-muted active:bg-ivory-deep/70;
+    min-height: 44px;
+  }
+
+  .ekea-btn-danger {
+    @apply ekea-btn border border-urgent/35 bg-white text-urgent
+           active:scale-[0.975] active:bg-urgent/5;
+  }
+
+  /* --- Formulaires ------------------------------------------------------- */
+
+  .ekea-label {
+    @apply mb-1.5 block text-[12px] font-medium uppercase tracking-[0.08em] text-ink-faint;
+  }
+
+  .ekea-input {
+    @apply w-full rounded-tile border border-sand/70 bg-white px-4 py-3.5
+           text-[15px] text-forest placeholder:text-ink-faint/70
+           transition-colors duration-200 ease-calm
+           focus:border-champagne focus:outline-none;
+  }
+
+  .ekea-input-error {
+    @apply border-urgent/60 bg-urgent/[0.03];
+  }
+
+  .ekea-error {
+    @apply mt-1.5 flex items-start gap-1.5 text-[12.5px] text-urgent;
+  }
+
+  /* --- Pastilles --------------------------------------------------------- */
+
+  .ekea-chip {
+    @apply inline-flex items-center gap-1.5 rounded-pill border px-3 py-1.5
+           text-[12.5px] font-medium transition-colors duration-200;
+  }
+
+  .ekea-chip-idle {
+    @apply border-sand/60 bg-white text-ink-muted;
+  }
+
+  .ekea-chip-active {
+    @apply border-forest bg-forest text-ivory;
+  }
+
+  /* --- Mise en page ------------------------------------------------------ */
+
+  .ekea-screen {
+    @apply mx-auto w-full max-w-[560px] px-5;
+  }
+
+  .ekea-screen-wide {
+    @apply mx-auto w-full max-w-[560px] px-5 lg:max-w-[880px];
+  }
+
+  .ekea-section-title {
+    @apply text-[13px] font-semibold uppercase tracking-[0.1em] text-ink-faint;
+  }
+
+  .ekea-skeleton {
+    @apply rounded-tile bg-gradient-to-r from-ivory-deep via-sand/40 to-ivory-deep;
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+
+  .ekea-divider {
+    @apply h-px w-full bg-sand/45;
+  }
+}
+
+@layer utilities {
+  .ekea-safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .ekea-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .ekea-scroll-fade {
+    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  }
+
+  .ekea-no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ekea-no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .ekea-tap {
+    @apply transition-transform duration-200 ease-calm active:scale-[0.97];
+  }
+}
