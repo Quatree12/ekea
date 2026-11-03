@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, EmptyState } from '@/components/ui';
+import { useStore } from '@/store/StoreContext';
+import { Button, Card, EmptyState } from '@/components/ui';
 import { EkeaMark } from '@/components/icons';
 
 export function NotFoundScreen() {
