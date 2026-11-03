@@ -27,6 +27,11 @@ import { CATEGORIES, CATEGORY_LABEL, DOCUMENT_TYPES } from '@/lib/constants';
 import { formatCHF, formatDateCH, parseFlexibleDate } from '@/lib/format';
 import type { DocumentCategory, EkeaDocument, ExtractedData } from '@/types';
 
+/**
+ * Champ extrait, vu par l’affichage.
+ * `value` est volontairement large : chaque champ du domaine porte un type
+ * différent (texte, liste, montant) et l’affichage les traite comme des données.
+ */
 type FieldLike = {
   value: unknown;
   source?: string;
@@ -35,6 +40,13 @@ type FieldLike = {
   page?: number;
   missing?: boolean;
 };
+
+/** Formateur accepté par InfoRow : reçoit la valeur brute, rend une chaîne. */
+type FieldFormatter = (value: unknown) => string;
+
+/** Adapte un formateur de date (string | null) en FieldFormatter. */
+const asDateFormatter = (format: (value: string | null | undefined) => string): FieldFormatter =>
+  (value) => format(typeof value === 'string' ? value : null);
 
 /**
  * SCREEN 4 — Vérification du document
@@ -252,13 +264,18 @@ export function ReviewScreen() {
             <InfoRow
               label="Date d’émission"
               field={draft.issueDate as FieldLike}
-              format={formatDateCH}
+              format={asDateFormatter(formatDateCH)}
             />
-            <InfoRow label="Échéance" field={draft.dueDate as FieldLike} format={formatDateCH} highlight />
+            <InfoRow
+              label="Échéance"
+              field={draft.dueDate as FieldLike}
+              format={asDateFormatter(formatDateCH)}
+              highlight
+            />
             <InfoRow
               label="Montant"
               field={draft.amount as unknown as FieldLike}
-              format={(v) => (typeof v === 'number' ? formatCHF(v) : null)}
+              format={(value) => (typeof value === 'number' ? formatCHF(value) : '—')}
             />
             <InfoRow label="Référence" field={draft.reference as FieldLike} />
             <InfoRow label="Durée du contrat" field={draft.contractDuration as FieldLike} />
@@ -514,7 +531,7 @@ export function ReviewScreen() {
         title="Confirmer ces informations ?"
         message={
           draft.dueDate.value
-            ? `Une échéance au ${formatDateCH(parseFlexibleDate(draft.dueDate.value as string) ?? '')} sera créée, ainsi que les actions proposées. Vous pourrez tout modifier ensuite.`
+            ? `Une échéance au ${formatDateCH(parseFlexibleDate(draft.dueDate.value) ?? '')} sera créée, ainsi que les actions proposées. Vous pourrez tout modifier ensuite.`
             : 'Aucune date limite n’est renseignée : seule la fiche du document sera enregistrée. Vous pourrez ajouter une échéance plus tard.'
         }
         confirmLabel="Confirmer"
@@ -537,7 +554,7 @@ function InfoRow({
 }: {
   label: string;
   field: FieldLike;
-  format?: (value: unknown) => string | null;
+  format?: FieldFormatter;
   highlight?: boolean;
 }) {
   const empty = field.missing || field.value === null || field.value === '';
