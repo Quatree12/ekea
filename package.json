@@ -6,7 +6,7 @@
   "description": "EKEA — L'administratif, en toute clarté. Assistant d'administration personnelle suisse.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },
