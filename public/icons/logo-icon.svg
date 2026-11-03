@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title">
+  <title id="title">EKEA — geometric E monogram</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 35 V145 M48 35 H132 M48 90 H112 M48 145 H132" stroke="#C49A79" stroke-width="13"/>
+    <path d="M132 35 V145" stroke="#493B4A" stroke-width="13"/>
+  </g>
+</svg>

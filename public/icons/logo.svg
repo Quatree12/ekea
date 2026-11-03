@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 180" role="img" aria-labelledby="title">
+  <title id="title">EKEA — wordmark with geometric monogram</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 35 V145 M45 35 H135 M45 90 H116 M45 145 H135" stroke="#C49A79" stroke-width="12"/>
+    <path d="M135 35 V145" stroke="#493B4A" stroke-width="12"/>
+  </g>
+  <text x="185" y="124" fill="#F5EEE8" font-family="'Helvetica Neue', Arial, sans-serif" font-size="102" font-weight="600" letter-spacing="13">EKEA</text>
+</svg>
