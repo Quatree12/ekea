@@ -2,7 +2,8 @@ name: Compiler EKEA
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -23,7 +24,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-            - run: npm install
+      - run: npm install
       - run: npx tsc --noEmit
       - run: npm run build
       - uses: actions/configure-pages@v5
@@ -34,9 +35,5 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
